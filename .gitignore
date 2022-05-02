@@ -10,7 +10,8 @@ data_HW1.csv
 #.idea/
 #
 ## C extensions
-#*.so
+#*.sow
+
 #
 ## Distribution / packaging
 #.Python
