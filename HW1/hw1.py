@@ -18,7 +18,7 @@ def main(args):
 
     # MRValueMean().run()
     # path = args[1]
-    path = "../data_HW1.csv"
+    path = "data_HW1.csv"
 
     with open(path) as f:
         data = f.readlines()
