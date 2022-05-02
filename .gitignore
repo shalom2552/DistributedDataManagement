@@ -6,6 +6,9 @@ __pycache__/
 # big data
 data_HW1.csv
 
+# pycharm
+.idea/
+
 # C extensions
 *.so
 
