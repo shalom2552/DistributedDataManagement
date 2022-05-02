@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# big data
+data_HW1.csv
+
 # C extensions
 *.so
 
