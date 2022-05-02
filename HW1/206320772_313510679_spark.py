@@ -24,12 +24,10 @@ def main():
         lambda row: ((row[DATE].split('/')[0], int(row[DATE].split('/')[1]), row[FACE], row[CURTAIN]), (row[VALUE], 1)))
     data_rdd = data_rdd.reduceByKey(lambda a, v: [float(a[0]) + float(v[0]), a[1] + v[1]]).mapValues(
         lambda x: x[0] / x[1])
-    data_rdd.take(10)
 
     invalid_records = data_rdd.filter(lambda x: x[1] < 0.05).map(lambda x: (x[0][-3], x[0][-2])).distinct()
 
     results = data_rdd.map(lambda x: (x[0][-3], x[0][-2])).distinct().subtract(invalid_records)
-    results.take()
 
     res = []
     faces8 = []
