@@ -20,7 +20,7 @@ class MRValueMean(MRJob):
             yield [int(date[0]), int(date[1]), curtain], float(value)
 
     def reducer_mean_month(self, key, value):
-        yield key, np.mean(value)
+        yield key, np.mean([val for val in value])
 
     def mapper_sum_days(self, key, value):
         yield (key[1], key[2]), value
