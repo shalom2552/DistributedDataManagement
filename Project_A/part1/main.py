@@ -24,7 +24,7 @@ credits =  spark.read.format("csv")\
   .option("delimiter", "\t")\
   .option("header","true")\
   .option("inferSchema", "true")\
-  .load("credits.csv")
+  .load("../data/credits.csv")
 
 prog = re.compile('\\[(.*?)\\]')
 second_match = f.udf(lambda x: prog.findall(x)[1])
