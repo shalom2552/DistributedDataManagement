@@ -5,9 +5,9 @@ from pyspark.sql import functions as f
 
 
 def main():
-    users, queries = parse_users(), parse_queries()
-    movies, tickets, credit = parse_movies(), parse_tickets(), parse_credits()
-    users.show()
+    users, queries = parse_users('users.csv'), parse_queries('queries.csv')
+    movies, tickets, credit = parse_movies('movies.csv'), parse_tickets('tickets.csv'), parse_credits('credits.csv')
+    users.show()  # example
     pass
 
 
