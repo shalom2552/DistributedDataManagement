@@ -70,10 +70,10 @@ def parse_queries(path):
     for feather in feathers:
         for special_char in ['\[', '\]', '\'']:
             queries = queries.withColumn(feather, f.regexp_replace(feather, special_char, ''))
-            if feather != 'date':
-                queries = queries.withColumn(feather, f.split(f.col(feather), ", "))
-            else:
-                queries = queries.withColumn(feather, f.col(feather).cast('int'))
+        if feather != 'date':
+            queries = queries.withColumn(feather, f.split(f.col(feather), ", "))
+        else:
+            queries = queries.withColumn(feather, f.col(feather).cast('int'))
 
     # select columns
     queries = queries.select('id', 'genres', 'lang', 'actors', 'director', 'cities', 'country', 'date', 'company')
