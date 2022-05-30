@@ -5,8 +5,15 @@ from pyspark.sql import functions as f
 
 
 def main():
-    users, queries = parse_users('users.csv'), parse_queries('queries.csv')
-    movies, tickets, credit = parse_movies('movies.csv'), parse_tickets('tickets.csv'), parse_credits('credits.csv')
+    data_path = ''  # TODO change folder path
+    names = ['tickets', 'movies', 'users', 'queries', 'credits']
+
+    users = parse_users(data_path + 'users.csv'), 
+    queries = parse_queries(data_path + 'queries.csv')
+    movies = parse_movies(data_path + 'movies.csv')
+    credit = parse_credits(data_path + 'credits.csv')
+    tickets = parse_tickets(data_path + 'tickets.csv')
+    
     users.show()  # example
     pass
 
