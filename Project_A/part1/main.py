@@ -11,7 +11,7 @@ def main():
     pass
 
 
-def parse_users():
+def parse_users(path):
     """
     load the .csv file from the path
     parse the data using spark
@@ -20,14 +20,13 @@ def parse_users():
     :return: the data frame after transformations
     """
     # load Users
-    path = 'users.csv'
     users = spark.read.option("Header", True).option("multiline", "true").option("escape", "\"").csv(path)
     users = users.withColumn("id", f.col("user_id").cast('int')).drop('user_id')
     users = users.select('id', 'user_location')
     return users
 
 
-def parse_tickets():
+def parse_tickets(path):
     """
     load the .csv file from the path
     parse the data using spark
@@ -35,7 +34,6 @@ def parse_tickets():
     cast string to list when needed and get substrings from long strings
     :return: the data frame after transformations
     """
-    path = 'tickets.csv'
     tickets = spark.read.option("Header", True).option("multiline", "true").option("escape", "\"").csv(path)
 
     tickets = tickets.withColumn("user_id", f.col("user_id").cast('int'))
@@ -46,7 +44,7 @@ def parse_tickets():
     return tickets
 
 
-def parse_queries():
+def parse_queries(path):
     """
     load the .csv file from the path
     parse the data using spark
@@ -55,7 +53,6 @@ def parse_queries():
     :return: the data frame after transformations
     """
     # load queries
-    path = 'queries.csv'
     queries = spark.read.option("Header", True).option("multiline", "true").option("escape", "\"").csv(path)
     queries = queries.withColumnRenamed('from_realese_date', 'date').withColumnRenamed('production_company', 'company')
 
@@ -76,7 +73,7 @@ def parse_queries():
     return queries
 
 
-def parse_movies():
+def parse_movies(path):
     """
     load the .csv file from the path
     parse the data using spark
@@ -85,7 +82,6 @@ def parse_movies():
     :return: the data frame after transformations
     """
     # load Movies
-    path = 'movies.csv'
     movies = spark.read.option("Header", True).option("multiline", "true").option("escape", "\"").csv(path)
     # columns select: id, genres, prod_comp, countries, release_date, languages, cities
     movies = movies.select('movie_id', 'genres', 'production_companies', 'production_countries', 'release_date',
@@ -116,7 +112,7 @@ def parse_movies():
     return movies
 
 
-def parse_credits():
+def parse_credits(path):
     """
     load the .csv file from the path
     parse the data using spark
@@ -124,9 +120,8 @@ def parse_credits():
     cast string to list when needed and get substrings from long strings
     :return: the data frame after transformations
     """
-
     credits_df = spark.read.format("csv").option("delimiter", "\t").option("header", "true")\
-        .option("inferSchema", "true").load("credits.csv")
+        .option("inferSchema", "true").load(path)
 
     prog = re.compile('\\[(.*?)\\]')
     second_match = f.udf(lambda x: prog.findall(x)[1])
@@ -137,8 +132,7 @@ def parse_credits():
         .select("cast", "crew", "id")
     # cast 'id' to integer
     credits_df = credits_df.withColumn("id", f.col("id").cast('int'))
-    credits_df.show(5)
-
+    
     # actors
     to_remove = ["'cast_id': ", '[0-9]', "\W+", "'character': ", ":", ",", " \(voice\)", "'credit_id': "]
     for string in to_remove:
@@ -157,7 +151,6 @@ def parse_credits():
     CASE WHEN x in ('WilNeverBrAgain') 
     THEN array_join(slice(ArrayOfWords,e+2,2),' ') ELSE NULL END)
     ,y-> y is not NULL)""")).drop("ArrayOfWords").drop("crew")
-    credits_df.show()
     return credits_df
 
 
